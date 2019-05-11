@@ -209,7 +209,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Object, Error>} - The promise to send a GET request
    * to the TvMaze API.
    */
-  _get(endpoint, query: ?Object = {}) : Promise<Object> {
+  _get(endpoint, query = {}) {
     const uri = `${this._baseUrl}${endpoint}`
     this._debug(`Making request to: '${uri}?${stringify(query)}'`)
 
@@ -228,7 +228,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Object, Error>} - The promise to send a GET request
    * to the TvMaze API.
    */
-  _getWithEmbed(endpoint, id, embed: ?string) : Promise<Object> {
+  _getWithEmbed(endpoint, id, embed) {
     this._checkId(id)
     return this._get(endpoint, { embed })
   }
@@ -239,7 +239,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Show>, Error>} - The promise to search for a
    * show.
    */
-  searchShows(q) : Promise<Array<Show>> {
+  searchShows(q) {
     if (q && typeof q !== 'string') {
       throw new Error(`${q} is not a valid value for q!`)
     }
@@ -255,7 +255,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Show, Error>} - The promise to search for a single
    * show.
    */
-  singleSearchShow({q, embed}) : Promise<Show> {
+  singleSearchShow({q, embed}) {
     if (!q) {
       throw new Error(`${q} is not a valid value for q!`)
     }
@@ -279,7 +279,7 @@ module.exports = class TvMazeApi {
    * @param {?string} config.imdb - The imdb id to lookup.
    * @returns {Promise<Show, Error>} - The promise to lookup a show.
    */
-  lookupShow({tvrage, thetvdb, imdb}) : Promise<Show> {
+  lookupShow({tvrage, thetvdb, imdb}) {
     if (!tvrage && !thetvdb && !imdb) {
       throw new Error('Specify a tvrage, thetvdb or imdb id for this request')
     }
@@ -297,7 +297,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Person>, Error>} - The promise to search for
    * people.
    */
-  searchPeople(q) : Promise<Array<Person>> {
+  searchPeople(q) {
     if (!q) {
       throw new Error(`${q} is not a valid value for q!`)
     }
@@ -312,7 +312,7 @@ module.exports = class TvMazeApi {
    * @param {?string} config.date - The ISO 8601 date of the schedule ot get.
    * @returns {Promise<Array<Schedule>, Error>} - The promise to get a shedule.
    */
-  getSchedule({country, date}) : Promise<Array<Schedule>> {
+  getSchedule({country, date}) {
     if (date && !date.match(this._iso8601)) {
       throw new Error(`${date} is not a ISO 8601 date!`)
     }
@@ -328,7 +328,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Schedule>, Error>} - The promise to get a full
    * schedule.
    */
-  getFullSchedule() : Promise<Array<Schedule>> {
+  getFullSchedule() {
     return this._get(`schedule/full`)
   }
 
@@ -339,7 +339,7 @@ module.exports = class TvMazeApi {
    * @param {?string} config.embed - Objects to embed with the response.
    * @returns {Promise<Show, Error>} - The promise to get a show.
    */
-  getShow({id, embed}) : Promise<Show> {
+  getShow({id, embed}) {
     return this._getWithEmbed(`shows/${id}`, id, embed)
   }
 
@@ -351,7 +351,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Episode>, Episode>} - The promise to get a list
    * of episodes of a show.
    */
-  getEpisodes({id, specials}) : Promise<Array<Episode>> {
+  getEpisodes({id, specials}) {
     this._checkId(id)
 
     return this._get(`shows/${id}/episodes`, {
@@ -368,7 +368,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Episode, Error>} - The promise to get an episode by
    * number.
    */
-  getEpisodeByNumber({id, season, episode}) : Promise<Episode> {
+  getEpisodeByNumber({id, season, episode}) {
     this._checkId(id)
     if (!season) {
       throw new Error(`${season} is not a valid value for season!`)
@@ -391,7 +391,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Episode>, Error>} - The promise to get a list of
    * episode by date.
    */
-  getEpisodeByDate({id, date}) : Promise<Array<Episode>> {
+  getEpisodeByDate({id, date}) {
     this._checkId(id)
     if (date && !date.match(this._iso8601)) {
       throw new Error(`${date} is not a ISO 8601 date!`)
@@ -406,7 +406,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Season>, Error>} - The promise to get a list of
    * seasons.
    */
-  getSeasons(id) : Promise<Array<Season>> {
+  getSeasons(id) {
     this._checkId(id)
     return this._get(`shows/${id}/seasons`)
   }
@@ -417,7 +417,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Cast>, Error>} - The promise to get a list of
    * cast members.
    */
-  getCast(id) : Promise<Array<Cast>> {
+  getCast(id) {
     this._checkId(id)
     return this._get(`shows/${id}/cast`)
   }
@@ -428,7 +428,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Crew>, Error>} - The promise to get a list of
    * crew members.
    */
-  getCrew(id) : Promise<Array<Crew>> {
+  getCrew(id) {
     this._checkId(id)
     return this._get(`shows/${id}/crew`)
   }
@@ -439,7 +439,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Alias>, Error>} - The promise to get a list of
    * aliasses of a show.
    */
-  getAliases(id) : Promise<Array<Alias>> {
+  getAliases(id) {
     this._checkId(id)
     return this._get(`shows/${id}/akas`)
   }
@@ -450,7 +450,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Array<Show>, Error>} - The promise to get a list of
    * shows.
    */
-  getPage(page) : Promise<Array<Show>> {
+  getPage(page) {
     if (!page || typeof (page) !== 'number') {
       throw new Error(`Page needs to be a number.`)
     }
@@ -465,7 +465,7 @@ module.exports = class TvMazeApi {
    * @param {?string} config.embed - Object to embed with the response.
    * @returns {Promise<Person, Error>} - The promise to get a person.
    */
-  getPerson({id, embed}) : Promise<Person> {
+  getPerson({id, embed}) {
     return this._getWithEmbed(`people/${id}`, id, embed)
   }
 
@@ -477,7 +477,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Object, Error>} - The promise to get the cast of a
    * show.
    */
-  getCastCredits({id, embed}) : Promise<Object> {
+  getCastCredits({id, embed}) {
     return this._getWithEmbed(`people/${id}/castcredits`, id, embed)
   }
 
@@ -489,7 +489,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Object, Error>} - The promise to get the crew of a
    * show.
    */
-  getCrewCredits({id, embed}) : Promise<Object> {
+  getCrewCredits({id, embed}) {
     return this._getWithEmbed(`people/${id}/crewcredits`, id, embed)
   }
 
@@ -498,7 +498,7 @@ module.exports = class TvMazeApi {
    * @returns {Promise<Object, Error>} - A list of show ids and the time when
    * they where last updated.
    */
-  showUpdates() : Promise<Object> {
+  showUpdates() {
     return this._get('updates/shows')
   }
 
